@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>鲜花祝福 - 小兰</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;700&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  min-height: 100vh;
+  background: linear-gradient(145deg, #fff0f5 0%, #ffd6e0 30%, #fbb6ce 60%, #e8a0d8 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Noto Sans SC', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+/* 背景柔光 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 40%, rgba(255,182,193,0.3), transparent 60%);
+  pointer-events: none;
+}
+
+/* 浮动鲜花 - 背景层 */
+.flowers-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.floating-flower {
+  position: absolute;
+  opacity: 0;
+  animation: floatFlower var(--t) ease-in-out infinite;
+}
+@keyframes floatFlower {
+  0%   { opacity: 0; transform: translateY(110vh) rotate(0deg) scale(0.4); }
+  15%  { opacity: 0.7; }
+  50%  { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-10vh) rotate(720deg) scale(1.1); }
+}
+
+/* 主容器 */
+.container {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  animation: fadeInUp 1.2s ease-out;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 大花束图标 */
+.bouquet {
+  font-size: 100px;
+  display: block;
+  margin-bottom: 16px;
+  animation: bouquetPulse 2s ease-in-out infinite;
+}
+@keyframes bouquetPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 40px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #e75480, #d63384, #c2185b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 6px;
+  margin-bottom: 8px;
+}
+.sub {
+  font-size: 18px;
+  color: rgba(80,40,60,0.5);
+  font-weight: 300;
+  letter-spacing: 6px;
+  margin-bottom: 20px;
+}
+
+/* 底部鲜花装饰 */
+.bottom-flowers {
+  text-align: center;
+  margin-top: 24px;
+  opacity: 0.6;
+}
+.bottom-flowers span {
+  display: inline-block;
+  font-size: 28px;
+  margin: 0 6px;
+  animation: flowerDance 2.5s ease-in-out infinite;
+}
+.bottom-flowers span:nth-child(2) { animation-delay: 0.3s; }
+.bottom-flowers span:nth-child(3) { animation-delay: 0.6s; }
+.bottom-flowers span:nth-child(4) { animation-delay: 0.9s; }
+.bottom-flowers span:nth-child(5) { animation-delay: 1.2s; }
+@keyframes flowerDance {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(5deg); }
+}
+
+/* 进度条 */
+.progress-bar {
+  width: 200px; height: 3px;
+  background: rgba(200,100,150,0.15);
+  border-radius: 4px;
+  margin: 28px auto 0;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #f472b6, #e75480);
+  border-radius: 4px;
+  animation: progressFill 3.5s ease-in-out forwards;
+}
+@keyframes progressFill {
+  to { width: 100%; }
+}
+
+/* 淡出效果 */
+.fade-out {
+  animation: fadeOut 0.8s ease-in-out forwards;
+}
+@keyframes fadeOut {
+  to { opacity: 0; transform: scale(0.95); }
+}
+
+@media (max-width: 520px) {
+  .bouquet { font-size: 72px; }
+  .title { font-size: 30px; letter-spacing: 4px; }
+  .sub { font-size: 14px; letter-spacing: 4px; }
+  .bottom-flowers span { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+<div class="flowers-bg" id="flowersBg"></div>
+<div class="container" id="container">
+  <span class="bouquet">💐</span>
+  <div class="title">献给我亲爱的小兰</div>
+  <div class="sub">TO MY DEAR</div>
+  <p style="color:rgba(80,40,60,0.6);font-size:15px;letter-spacing:2px;line-height:1.8;">
+    每一朵花都在轻轻告诉你<br>
+    你值得世间所有的美好
+  </p>
+  <div class="bottom-flowers">
+    <span>🌹</span><span>🌷</span><span>🌺</span><span>🌸</span><span>🌼</span>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill"></div>
+  </div>
+</div>
+
+<script>
+// 背景浮动鲜花
+const bg = document.getElementById('flowersBg');
+const emojis = ['🌹','🌸','🌺','🌷','🌼','💐','🌻','🌹','🌸','🌷'];
+const count = window.innerWidth < 600 ? 18 : 28;
+for (let i = 0; i < count; i++) {
+  const el = document.createElement('div');
+  el.className = 'floating-flower';
+  el.textContent = emojis[i % emojis.length];
+  el.style.left = (2 + Math.random() * 96) + '%';
+  el.style.fontSize = (18 + Math.random() * 24) + 'px';
+  el.style.setProperty('--t', (10 + Math.random() * 14) + 's');
+  el.style.animationDelay = (Math.random() * 14) + 's';
+  bg.appendChild(el);
+}
+
+// 3.8 秒后跳转到生日页面
+setTimeout(() => {
+  document.getElementById('container').classList.add('fade-out');
+}, 3500);
+
+setTimeout(() => {
+  window.location.href = '生日祝福.html';
+}, 4300);
+</script>
+</body>
+</html>
